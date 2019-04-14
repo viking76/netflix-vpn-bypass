@@ -13,7 +13,7 @@
 # Script Description:
 #
 # Selectively route Netflix traffic to the WAN interface or OpenVPN interface on
-# Asuswrt-Merlin firmware.
+# Openwrt firmware.
 #
 # Since January 2016, Netflix blocks known VPN servers. The purpose of the IPSET_Netflix.sh
 # script is to bypass the OpenVPN Client for Netflix traffic and route it to the WAN interface.
@@ -26,7 +26,7 @@ logger -t "($(basename "$0"))" $$ Starting Script Execution
 # Uncomment the line below for debugging
 #set -x
 
-FILE_DIR="/opt/tmp"
+FILE_DIR="/tmp"
 
 
 # Prevent script from running concurrently when called from nat-start
@@ -62,15 +62,15 @@ main() {
 # to prevent ipinfo.io from being blocked by AB-Solution and Skynet
 
 whitelist_ipinfo () {
-    if [ ! -s "/jffs/shared-SelectiveRouting-whitelist" ];then
-    printf "ipinfo.io\n" > /jffs/shared-SelectiveRouting-whitelist
+    if [ ! -s "/tmp/shared-SelectiveRouting-whitelist" ];then
+    printf "ipinfo.io\n" > /tmp/shared-SelectiveRouting-whitelist
 fi
 }
 
 #Download Netflix AS2906 IPv4 addresses
 
 download_AS2906 () {
-    curl https://ipinfo.io/AS2906 2>/dev/null | grep -E "a href.*2906\/" | grep -v ":" | sed 's/^.*<a href="\/AS2906\///; s/" >//' > /opt/tmp/x3mRouting_NETFLIX
+    curl https://ipinfo.io/AS2906 2>/dev/null | grep -E "a href.*2906\/" | grep -v ":" | sed 's/^.*<a href="\/AS2906\///; s/" >//' > /tmp/x3mRouting_NETFLIX
 }
 
 # if ipset list NETFLIX does not exist, create it
@@ -149,13 +149,13 @@ Chk_Entware () {
 # Download Amazon AWS json file
 
 download_AMAZONAWS () {
-    wget https://ip-ranges.amazonaws.com/ip-ranges.json -O /opt/tmp/ip-ranges.json
+    wget https://ip-ranges.amazonaws.com/ip-ranges.json -O /tmp/ip-ranges.json
 
     for REGION in us-east-1 us-east-2 us-west-1 us-west-2
         do
             jq '.prefixes[] | select(.region=='\"$REGION\"') | .ip_prefix' < "$FILE_DIR/ip-ranges.json" | sed 's/"//g' | sort -u >> "$FILE_DIR/x3mRouting_AMAZONAWS"
         done
-    rm -rf /opt/tmp/ip-ranges.json
+    rm -rf /tmp/ip-ranges.json
 }
 
 # if ipset AMAZONAWS does not exist, create it
@@ -189,24 +189,23 @@ create_fwmarks () {
     ip rule add from 0/0 fwmark "$FWMARK_WAN" table 254 prio 9990
 
 #VPN Client 1
-    ip rule del fwmark "$FWMARK_OVPNC1" > /dev/null 2>&1
-    ip rule add from 0/0 fwmark "$FWMARK_OVPNC1" table 111 prio 9995
+#    ip rule del fwmark "$FWMARK_OVPNC1" > /dev/null 2>&1
+ #   ip rule add from 0/0 fwmark "$FWMARK_OVPNC1" table 111 prio 9995
 
 #VPN Client 2
-    ip rule del fwmark "$FWMARK_OVPNC2" > /dev/null 2>&1
-    ip rule add from 0/0 fwmark "$FWMARK_OVPNC2" table 112 prio 9994
+  #  ip rule del fwmark "$FWMARK_OVPNC2" > /dev/null 2>&1
+  #  ip rule add from 0/0 fwmark "$FWMARK_OVPNC2" table 112 prio 9994
 
 #VPN Client 3
-    ip rule del fwmark "$FWMARK_OVPNC3" > /dev/null 2>&1
-    ip rule add from 0/0 fwmark "$FWMARK_OVPNC3" table 113 prio 9993
+  #  ip rule del fwmark "$FWMARK_OVPNC3" > /dev/null 2>&1
+  #  ip rule add from 0/0 fwmark "$FWMARK_OVPNC3" table 113 prio 9993
 
 #VPN Client 4
-    ip rule del fwmark "$FWMARK_OVPNC4" > /dev/null 2>&1
-    ip rule add from 0/0 fwmark "$FWMARK_OVPNC4" table 114 prio 9992
+  #  ip rule add from 0/0 fwmark "$FWMARK_OVPNC4" table 114 prio 9992
 
 #VPN Client 5
-    ip rule del fwmark "$FWMARK_OVPNC5" > /dev/null 2>&1
-    ip rule add from 0/0 fwmark "$FWMARK_OVPNC5" table 115 prio 9991
+  #  ip rule del fwmark "$FWMARK_OVPNC5" > /dev/null 2>&1
+  #  ip rule add from 0/0 fwmark "$FWMARK_OVPNC5" table 115 prio 9991
 
     ip route flush cache
 }
