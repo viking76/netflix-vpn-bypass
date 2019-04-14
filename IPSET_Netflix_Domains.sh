@@ -62,24 +62,24 @@ create_fwmarks () {
     ip rule add from 0/0 fwmark "$FWMARK_WAN" table 254 prio 9990
 
 #VPN Client 1
-    ip rule del fwmark "$FWMARK_OVPNC1" 2>/dev/null
-    ip rule add from 0/0 fwmark "$FWMARK_OVPNC1" table 111 prio 9995
+ #   ip rule del fwmark "$FWMARK_OVPNC1" 2>/dev/null
+ #   ip rule add from 0/0 fwmark "$FWMARK_OVPNC1" table 111 prio 9995
 
 #VPN Client 2
-    ip rule del fwmark "$FWMARK_OVPNC2" 2>/dev/null
-    ip rule add from 0/0 fwmark "$FWMARK_OVPNC2" table 112 prio 9994
+  #  ip rule del fwmark "$FWMARK_OVPNC2" 2>/dev/null
+  #  ip rule add from 0/0 fwmark "$FWMARK_OVPNC2" table 112 prio 9994
 
 #VPN Client 3
-    ip rule del fwmark "$FWMARK_OVPNC3" 2>/dev/null
-    ip rule add from 0/0 fwmark "$FWMARK_OVPNC3" table 113 prio 9993
+   # ip rule del fwmark "$FWMARK_OVPNC3" 2>/dev/null
+   # ip rule add from 0/0 fwmark "$FWMARK_OVPNC3" table 113 prio 9993
 
 #VPN Client 4
-    ip rule del fwmark "$FWMARK_OVPNC4" 2>/dev/null
-    ip rule add from 0/0 fwmark "$FWMARK_OVPNC4" table 114 prio 9992
+   # ip rule del fwmark "$FWMARK_OVPNC4" 2>/dev/null
+   # ip rule add from 0/0 fwmark "$FWMARK_OVPNC4" table 114 prio 9992
 
 #VPN Client 5
-    ip rule del fwmark "$FWMARK_OVPNC5" 2>/dev/null
-    ip rule add from 0/0 fwmark "$FWMARK_OVPNC5" table 115 prio 9991
+   # ip rule del fwmark "$FWMARK_OVPNC5" 2>/dev/null
+   # ip rule add from 0/0 fwmark "$FWMARK_OVPNC5" table 115 prio 9991
 
     ip route flush cache
 }
@@ -157,8 +157,8 @@ DNSMASQ_PARM_NEW="ipset=/amazonaws.com/netflix.com/nflxext.com/nflximg.net/nflxs
 
 check_ipset_list () {
     if [ "$(ipset list -n x3mRouting_NETFLIX_DNSMASQ 2>/dev/null)" != "x3mRouting_NETFLIX_DNSMASQ" ]; then #does NETFLIX ipset list exist?
-        if [ -s /opt/tmp/x3mRouting_NETFLIX_DNSMASQ ]; then # does x3mRouting_NETFLIX_DNSMASQ ipset restore file exist?
-            ipset restore -! < /opt/tmp/x3mRouting_NETFLIX_DNSMASQ   # Restore ipset list if restore file exists at /opt/tmp/x3mRouting_NETFLIX_DNSMASQ
+        if [ -s /tmp/x3mRouting_NETFLIX_DNSMASQ ]; then # does x3mRouting_NETFLIX_DNSMASQ ipset restore file exist?
+            ipset restore -! < /tmp/x3mRouting_NETFLIX_DNSMASQ   # Restore ipset list if restore file exists at /opt/tmp/x3mRouting_NETFLIX_DNSMASQ
         else
             ipset create x3mRouting_NETFLIX_DNSMASQ hash:net family inet hashsize 1024 maxelem 65536  # No restore file, so create x3mRouting_NETFLIX_DNSMASQ ipset list from scratch
         fi
@@ -167,9 +167,9 @@ check_ipset_list () {
 
 # if ipset list NETFLIX is older than 24 hours, save the current ipset list to disk
 check_NETFLIX_restore_file_age () {
-    if [ -s /opt/tmp/x3mRouting_NETFLIX_DNSMASQ ]; then
-        if [ "$(find /opt/tmp/x3mRouting_NETFLIX_DNSMASQ -name x3mRouting_NETFLIX_DNSMASQ -mtime +1 -print 2>/dev/null)" = "/opt/tmp/x3mRouting_NETFLIX_DNSMASQ" ] ; then
-            ipset save x3mRouting_NETFLIX_DNSMASQ > /opt/tmp/x3mRouting_NETFLIX_DNSMASQ
+    if [ -s /tmp/x3mRouting_NETFLIX_DNSMASQ ]; then
+        if [ "$(find /tmp/x3mRouting_NETFLIX_DNSMASQ -name x3mRouting_NETFLIX_DNSMASQ -mtime +1 -print 2>/dev/null)" = "/tmp/x3mRouting_NETFLIX_DNSMASQ" ] ; then
+            ipset save x3mRouting_NETFLIX_DNSMASQ > /tmp/x3mRouting_NETFLIX_DNSMASQ
         fi
     fi
 }
@@ -178,7 +178,7 @@ check_NETFLIX_restore_file_age () {
 check_cron_job () {
     cru l | grep x3mRouting_NETFLIX_DNSMASQ_ipset_list
     if [ "$?" = "1" ]; then  # no cronjob entry found, create it
-        cru a x3mRouting_NETFLIX_DNSMASQ "0 2 * * * ipset save x3mRouting_NETFLIX_DNSMASQ > /opt/tmp/x3mRouting_NETFLIX_DNSMASQ"
+        cru a x3mRouting_NETFLIX_DNSMASQ "0 2 * * * ipset save x3mRouting_NETFLIX_DNSMASQ > /tmp/x3mRouting_NETFLIX_DNSMASQ"
     fi
 }
 
