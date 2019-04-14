@@ -1,4 +1,8 @@
 # netflix-vpn-bypass
+This script is a fork of Xentrk work. 
+Its work with OPENWRT after a good install you can use 2 ipset defined into firewall or load-balanced rules 
+
+
 Selectively route Netflix traffic to the WAN interface, or one of the five OpenVPN clients, on **Asuswrt-Merlin** firmware.  
 
 Since January 2016, Netflix blocks known VPN servers. This project was originally developed to bypass the OpenVPN client for Netflix traffic and route it to the WAN interface. The scripts now provide the ability to route Netflix traffic to an OpenVPN Client if desired. This can be accomplished by editing the $FWMARK parameter in the iptables commands inside the **create_routing_rules** function. If you want a VPN provider who can circumvent the Netflix VPN ban, see my blog post [Why I use Torguard as my VPN Provider](https://x3mtek.com/why-i-use-torguard-as-my-vpn-provider) to learn more. 
