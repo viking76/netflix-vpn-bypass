@@ -1,6 +1,12 @@
 # netflix-vpn-bypass
-This script is a fork of Xentrk work. 
+This script is a fork of Xentrk great job work. 
+
 Its work with OPENWRT after a good install you can use 2 ipset defined into firewall or load-balanced rules 
+
+Viking76
+
+
+
 
 
 Selectively route Netflix traffic to the WAN interface, or one of the five OpenVPN clients, on **Asuswrt-Merlin** firmware.  
