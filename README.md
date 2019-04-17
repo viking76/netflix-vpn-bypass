@@ -47,9 +47,13 @@ This script will:
 6. Route IPv4 addresses in IPSET lists x3mRouting_NETFLIX and x3mRouting_AMAZONAWS to the WAN interface
 
 #### Installation
+On /tmp 
+cd  /tmp
+
 opkg install jq curl ca-bundle ca-certificates libustream-openssl libopenssl
 
 curl --retry 3 "https://raw.githubusercontent.com/Viking76/netflix-vpn-bypass/master/IPSET_Netflix.sh" -o /tmp/IPSET_Netflix.sh && chmod 755 /tmp/IPSET_Netflix.sh
+sh /tmp/IPSET_Netflix.sh
 
 If the script runs successfully, you can have the script execute at system start-up by calling it from **/jffs/scripts/nat-start** by including the line ```sh /jffs/scripts/IPSET_Netflix.sh``` in the file.  Make sure **nat-start** has a she-bang as the first line in the file ```#!/bin/sh``` and is executable e.g. ```chmod 755 /jffs/scripts/nat-start```.  
 
