@@ -142,15 +142,15 @@ DNSMASQ_PARM_OLD="ipset=/amazonaws.com/netflix.com/nflxext.com/nflximg.net/nflxs
 DNSMASQ_PARM_NEW="ipset=/amazonaws.com/netflix.com/nflxext.com/nflximg.net/nflxso.net/nflxvideo.net/dvd.netflix.com/x3mRouting_NETFLIX_DNSMASQ"
 
     if [ -s /jffs/configs/dnsmasq.conf.add ]; then  # dnsmasq.conf.add file exists
-        if [ "$(grep -c "$DNSMASQ_PARM_OLD" "/jffs/configs/dnsmasq.conf.add")" -eq "1" ]; then  # see if line exists for x3mRouting_NETFLIX_DNSMASQ
-            sed -i "\\~$DNSMASQ_PARM_OLD~d" "/jffs/configs/dnsmasq.conf.add"
+        if [ "$(grep -c "$DNSMASQ_PARM_OLD" "/etc/dnsmasq.conf.add")" -eq "1" ]; then  # see if line exists for x3mRouting_NETFLIX_DNSMASQ
+            sed -i "\\~$DNSMASQ_PARM_OLD~d" "/etc/dnsmasq.conf.add"
         fi
-        if [ "$(grep -c "$DNSMASQ_PARM_NEW" "/jffs/configs/dnsmasq.conf.add")" -eq "0" ]; then  # see if line exists for x3mRouting_NETFLIX_DNSMASQ
+        if [ "$(grep -c "$DNSMASQ_PARM_NEW" "/etc/dnsmasq.conf.add")" -eq "0" ]; then  # see if line exists for x3mRouting_NETFLIX_DNSMASQ
             echo "$DNSMASQ_PARM_NEW" >> /jffs/configs/dnsmasq.conf.add # add NETFLIX entry to dnsmasq.conf.add
             service restart_dnsmasq > /dev/null 2>&1
         fi
     else
-        echo "$DNSMASQ_PARM_NEW\n" > /jffs/configs/dnsmasq.conf.add # dnsmasq.conf.add does not exist, create dnsmasq.conf.add
+        echo "$DNSMASQ_PARM_NEW\n" > /etc/dnsmasq.conf.add # dnsmasq.conf.add does not exist, create dnsmasq.conf.add
         service restart_dnsmasq > /dev/null 2>&1
     fi
 }
