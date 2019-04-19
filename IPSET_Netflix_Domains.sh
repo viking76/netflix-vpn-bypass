@@ -4,9 +4,10 @@
 # Version 1.0.1
 # Author: Xentrk
 # Date: 7-September-2018
+# modified by: Viking76 19 may 2019
 #
 # Description:
-#    Selective Routing Script for Netflix using Asuswrt-Merlin firmware.  This version uses the ipset method
+#    Selective Routing Script for Netflix using Openwrt firmware.  This version uses the ipset method
 #    built into dnsmasq.
 #
 # Grateful:
