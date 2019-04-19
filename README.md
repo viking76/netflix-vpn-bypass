@@ -56,8 +56,6 @@ curl --retry 3 "https://raw.githubusercontent.com/Viking76/netflix-vpn-bypass/ma
 sh /tmp/IPSET_Netflix.sh
 ```
 
-If the script runs successfully, you can have the script execute at system start-up by calling it from **/jffs/scripts/nat-start** by including the line ```sh /jffs/scripts/IPSET_Netflix.sh``` in the file.  Make sure **nat-start** has a she-bang as the first line in the file ```#!/bin/sh``` and is executable e.g. ```chmod 755 /jffs/scripts/nat-start```.  
-
 ### IPSET_Netflix_Domains.sh
 **IPSET_Netflix_Domains.sh** uses the feature of ipset in dnsmasq to dynamically generate the IPv4 address used by Netflix and Amazon AWS dynamically.  The script will create a cron job that will backup the IPSET list at 2:00 am.  The backup will be used to restore the IPSET list upon system startup.  
 
@@ -65,9 +63,18 @@ This approach can be useful when your ISP is using the [Netflix Open Connect Net
 
     ipset=/amazonaws.com/netflix.com/nflxext.com/nflximg.net/nflxso.net/nflxvideo.net/x3mRouting_NETFLIX_DNSMASQ
 
-The **x3mRouting_NETFLIX_DNSMASQ** entry is the name of the IPSET list. The script will place the line in **/jffs/configs/dnsmasq.conf.add** if it does not exist.
+The **x3mRouting_NETFLIX_DNSMASQ** entry is the name of the IPSET list. The script will place the line in **/etc/dnsmasq.conf.add** if it does not exist.
 
 To determine the domain names, follow the install instructions to download the script **getdomainnames.sh** to **/jffs/scripts/getdomainnames.sh**. Navigate to the dnsmasq log file directory. My dnsmasq.log file location is **/opt/var/log**.   
+
+## INSTALL code
+```cd  /tmp
+curl --retry 3 "https://raw.githubusercontent.com/Viking76/netflix-vpn-bypass/master/IPSET_Netflix_Domains.sh" -o /tmp/IPSET_Netflix_Domains.sh && chmod 755 /tmp/IPSET_Netflix_Domains.sh
+sh /tmp/IPSET_Netflix_Domains.sh
+```
+
+
+
 
 Turn off the OpenVPN Client so all of your network traffic will traverse thru the WAN. Navigate to the dnsmasq log file directory **/opt/var/log**. Type the command to start capturing domains used by Netflix:
 
