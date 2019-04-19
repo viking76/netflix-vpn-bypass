@@ -48,6 +48,7 @@ This script will:
 
 #### Installation
 On /tmp 
+
 ```cd  /tmp
 
 opkg install jq curl ca-bundle ca-certificates libustream-openssl libopenssl
@@ -109,14 +110,15 @@ The ```nslookup <domain_name>``` command is useful in looking up IPv4 addresses 
     Country-Code: US
 
 #### Installation
-```cd  /tmp    /usr/sbin/curl --retry 3 "https://raw.githubusercontent.com/viking76/netflix-vpn-bypass/master/getdomainnames.sh" -o /etc/getdomainnames.sh && chmod 755 /etc/getdomainnames.sh
-```
+
+```cd  /tmp    /usr/sbin/curl --retry 3 "https://raw.githubusercontent.com/viking76/netflix-vpn-bypass/master/getdomainnames.sh" -o /etc/getdomainnames.sh && chmod 755 /etc/getdomainnames.sh ```
 
 ## domains suite
+
 ```
 curl --retry 3 "https://raw.githubusercontent.com/Viking76/netflix-vpn-bypass/master/IPSET_Netflix_Domains.sh" -o /tmp/IPSET_Netflix_Domains.sh && chmod 755 /tmp/IPSET_Netflix_Domains.sh
-sh /tmp/IPSET_Netflix_Domains.sh
-```
+sh /tmp/IPSET_Netflix_Domains.sh ```
+
 
 ### Troubleshooting
 ```ipset -L x3mRouting_NETFLIX``` command will list the contents of the IPSET list x3mRouting_NETFLIX
