@@ -69,7 +69,7 @@ The **x3mRouting_NETFLIX_DNSMASQ** entry is the name of the IPSET list. The scri
 To determine the domain names, follow the install instructions to download the script **getdomainnames.sh** to **/jffs/scripts/getdomainnames.sh**. Navigate to the dnsmasq log file directory. My dnsmasq.log file location is **/opt/var/log**.   
 
 
-Turn off the OpenVPN Client so all of your network traffic will traverse thru the WAN. Navigate to the dnsmasq log file directory **/opt/var/log**. Type the command to start capturing domains used by Netflix:
+Turn off the OpenVPN Client so all of your network traffic will traverse thru the WAN. Navigate to the dnsmasq log file directory **/var/log**. Type the command to start capturing domains used by Netflix:
 
     tail -f dnsmasq.log > Netflix
 
