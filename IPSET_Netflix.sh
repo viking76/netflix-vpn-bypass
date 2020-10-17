@@ -181,6 +181,31 @@ check_amazonaws_ipset_list_values () {
     fi
 }
 
+download_AS11344 () {
+    curl https://ipinfo.io/AS11344 2>/dev/null | grep -E "a href.*11344\/" | grep -v ":" | sed 's/^.*<a href="\/AS11344\///; s/" >//' > /tmp/x3mRouting_YOUTUBE
+}
+
+# if ipset list NETFLIX does not exist, create it
+
+check_youtube_ipset_list_exist () {
+if [ "$(ipset list -n x3mRouting_YOUTUBE 2>/dev/null)" != "x3mRouting_YOUTUBE" ]; then
+    ipset create x3mRouting_YOUTUBE hash:net family inet hashsize 1024 maxelem 65536
+fi
+}
+
+# if ipset list NETFLIX is empty or source file is older than 24 hours, download source file; load ipset list
+check_youtube_ipset_list_values () {
+    if [ "$(ipset -L x3mRouting_YOUTUBE 2>/dev/null | awk '{ if (FNR == 7) print $0 }' | awk '{print $4 }')" -eq "0" ]; then
+        if [ ! -s "$FILE_DIR/x3mRouting_YOUTUBE" ] || [ "$(find "$FILE_DIR" -name x3mRouting_YOUTUBE -mtime +7 -print)" = "$FILE_DIR/x3mRouting_YOUTUBE" ]; then
+            download_AS11344
+        fi
+        awk '{print "add x3mRouting_YOUTUBE " $1}' "$FILE_DIR/x3mRouting_YOUTUBE" | ipset restore -!
+    else
+        if [ ! -s "$FILE_DIR/x3mRouting_YOUTUBE" ]; then
+            download_AS11344
+        fi
+    fi
+}
 # Create fwmark for WAN and OpenVPN Interfaces
 
 create_fwmarks () {
