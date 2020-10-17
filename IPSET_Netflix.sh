@@ -253,6 +253,9 @@ create_routing_rules () {
 
     iptables -t mangle -D PREROUTING -i br0 -m set --match-set x3mRouting_AMAZONAWS dst -j MARK --set-mark "$FWMARK_WAN" > /dev/null 2>&1
     iptables -t mangle -A PREROUTING -i br0 -m set --match-set x3mRouting_AMAZONAWS dst -j MARK --set-mark "$FWMARK_WAN"
+    
+    iptables -t mangle -D PREROUTING -i br0 -m set --match-set x3mRouting_YOUTUBE dst -j MARK --set-mark "$FWMARK_WAN" > /dev/null 2>&1
+    iptables -t mangle -A PREROUTING -i br0 -m set --match-set x3mRouting_YOUTUBE dst -j MARK --set-mark "$FWMARK_WAN"
 }
 
 whitelist_ipinfo
